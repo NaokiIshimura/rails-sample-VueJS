@@ -1,0 +1,63 @@
+<h1>VueJS+Ajax Sample</h1>
+
+<hr>
+
+バインディング１<br>
+-ボタン押下でテキスト更新-<br><br>
+
+<div id="app">
+  <p>{{ message }}</p>
+  <button v-on:click="refreshMessage">現在時刻(VueJS)</button>
+</div>
+
+<%= button_to "現在時刻(Ajax)" , sample_index_path ,remote: true %>
+
+<hr>
+
+バインディング２<br>
+-テキストボックスの値変更でテキスト更新-<br><br>
+
+<div id="app2">
+  <p>テキスト：{{ txt }}</p>
+  <p>文字数　：{{ len }}</p>
+  <input v-model="txt">
+</div>
+
+
+<script src="https://unpkg.com/vue"></script>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!'
+        },
+        methods: {
+            refreshMessage: function () {
+                this.message = new Date();
+            }
+        }
+    })
+
+    var app2 = new Vue({
+        el: '#app2',
+        data: {
+            txt: 'Hello Vue!',
+            len: '0'
+        },
+        created: function () {
+            this.len = this.txt.length;
+        }
+    })
+
+
+    // リスナー
+    // https://jp.vuejs.org/v2/guide/instance.html
+    // $watch はインスタンスメソッドです
+    app2.$watch('txt', function () {
+        // このコールバックは `app6.message` の値が変わる時に呼ばれます
+        //console.log(app2.txt);
+        //console.log(app2.len);
+        app2.len = app2.txt.length;
+    })
+</script>
